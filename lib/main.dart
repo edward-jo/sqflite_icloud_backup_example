@@ -132,8 +132,15 @@ class MessageListItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(message ?? 'Empty message'),
-              Text(date ?? 'Empty date'),
+              Text(
+                message ?? 'Empty message',
+                style: const TextStyle(fontSize: 14),
+              ),
+              const SizedBox(height: 3.0),
+              Text(
+                date ?? 'Empty date',
+                style: const TextStyle(fontSize: 12, color: Color(0xFF9B9A97)),
+              ),
             ],
           ),
         )
