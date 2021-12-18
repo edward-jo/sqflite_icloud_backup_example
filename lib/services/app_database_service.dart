@@ -1,8 +1,9 @@
 import 'package:sqflite_icloud_backup_example/models/message.dart';
 
-abstract class DatabaseService {
-  Future openDatabase();
-  Future closeDatabase();
+abstract class AppDatabaseService {
+  Future openAppDatabase();
+  Future closeAppDatabase();
+  Future deleteAppDatabase();
   Future<Message> createMessage(Message message);
   Future<int> deleteMesssage(int id);
   Future<Message> readMessage(int id);

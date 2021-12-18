@@ -1,9 +1,12 @@
 import 'dart:developer' as developer;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'models/message.dart';
+import 'services/service_locator.dart';
+import 'view_models/message_viewmodel.dart';
 
-void main() {
+Future<void> main() async {
+  setupServiceLocator();
   runApp(const MyApp());
 }
 
@@ -34,8 +37,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final MessageViewModel _model = serviceLocator<MessageViewModel>();
   final _messageController = TextEditingController();
-  List<Message> _messages = [];
+  late Future<bool> _readMessagesFuture;
+
+  @override
+  void initState() {
+    _readMessagesFuture = _model.readAll();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,14 +61,34 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               // MESSAGE LIST
               Expanded(
-                child: ListView.builder(
-                    itemCount: _messages.length,
-                    itemBuilder: (_, i) {
-                      return MessageListItem(
-                        message: _messages[i].message,
-                        date: _messages[i].createdTime.toString(),
+                child: FutureBuilder(
+                  future: _readMessagesFuture,
+                  builder: (ctx, snapshot) {
+                    if (snapshot.connectionState != ConnectionState.done) {
+                      return const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2.0),
                       );
-                    }),
+                    }
+
+                    if (snapshot.hasError) {
+                      CupertinoAlertDialog(
+                        content: Text(snapshot.error.toString()),
+                      );
+                      return Container();
+                    }
+
+                    return ListView.builder(
+                        itemCount: _model.messages.length,
+                        itemBuilder: (_, i) {
+                          return MessageListItem(
+                            message: _model.messages[i].message,
+                            date: _model.messages[i].createdTime.toString(),
+                          );
+                        });
+                  },
+                ),
               ),
               // TEXT INPUT & SAVE
               Container(
@@ -93,15 +123,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future _save(BuildContext context) async {
     developer.log('Save message( ${_messageController.text.trim()} )');
-    setState(() {
-      _messages.add(
-        Message(
-          id: null,
-          message: _messageController.text.trim(),
-          createdTime: DateTime.now(),
-        ),
-      );
-    });
+    await _model.save(
+      Message(
+        id: null,
+        message: _messageController.text.trim(),
+        createdTime: DateTime.now(),
+      ),
+    );
+    setState(() {});
     _messageController.text = '';
     FocusScope.of(context).unfocus();
     return;
