@@ -52,6 +52,10 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(onPressed: () {}, icon: const Icon(Icons.cloud_upload)),
+          IconButton(onPressed: () {}, icon: const Icon(Icons.cloud_download)),
+        ],
       ),
       body: Center(
         child: Container(
