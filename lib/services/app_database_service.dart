@@ -4,6 +4,7 @@ abstract class AppDatabaseService {
   Future openAppDatabase();
   Future closeAppDatabase();
   Future deleteAppDatabase();
+  Future<String> getAppDatabaseFilePath();
   Future<Message> createMessage(Message message);
   Future<int> deleteMesssage(int id);
   Future<Message> readMessage(int id);

@@ -87,4 +87,10 @@ class AppDatabaseServiceImpl extends AppDatabaseService {
       whereArgs: [message.id],
     );
   }
+
+  @override
+  Future<String> getAppDatabaseFilePath() async {
+    final db = await _appDb.database;
+    return db.path;
+  }
 }
