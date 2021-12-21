@@ -1,6 +1,6 @@
 import 'dart:developer' as developer;
 import '../models/message.dart';
-import '../services/app_database_service.dart';
+import '../services/app_database/app_database_service.dart';
 import '../services/service_locator.dart';
 
 class MessageViewModel {

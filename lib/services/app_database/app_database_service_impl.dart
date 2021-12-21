@@ -1,7 +1,7 @@
 import 'package:sqflite_icloud_backup_example/database/app_database.dart';
 import 'package:sqflite_icloud_backup_example/models/message.dart';
 import 'app_database_service.dart';
-import '../constants.dart';
+import '../../constants.dart';
 
 final AppDatabase _appDb = AppDatabase();
 
