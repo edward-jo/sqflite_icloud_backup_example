@@ -37,6 +37,7 @@ dependencies:
   json_annotation: ^4.4.0
   sqflite: ^2.0.1
   get_it: ^7.2.0
+  icloud_storage: ^0.2.2
 
 dev_dependencies:
   flutter_test:

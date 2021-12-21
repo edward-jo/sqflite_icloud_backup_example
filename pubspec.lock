@@ -249,6 +249,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
+  icloud_storage:
+    dependency: "direct main"
+    description:
+      name: icloud_storage
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.2"
   io:
     dependency: transitive
     description:
@@ -494,4 +501,4 @@ packages:
     version: "3.1.0"
 sdks:
   dart: ">=2.14.0 <3.0.0"
-  flutter: ">=1.10.0"
+  flutter: ">=1.20.0"
