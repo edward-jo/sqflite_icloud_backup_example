@@ -38,6 +38,7 @@ dependencies:
   sqflite: ^2.0.1
   get_it: ^7.2.0
   icloud_storage: ^0.2.2
+  provider: ^6.0.1
 
 dev_dependencies:
   flutter_test:
