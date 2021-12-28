@@ -7,15 +7,14 @@ final AppDatabase _appDb = AppDatabase();
 
 class AppDatabaseServiceImpl extends AppDatabaseService {
   @override
-  Future openAppDatabase() {
-    // TODO: implement openDatabase
-    throw UnimplementedError();
+  Future init() async {
+    await _appDb.init();
+    return this;
   }
 
   @override
   Future closeAppDatabase() async {
-    final db = await _appDb.database;
-    db.close();
+    await _appDb.closeAppDatabase();
   }
 
   @override
@@ -25,7 +24,7 @@ class AppDatabaseServiceImpl extends AppDatabaseService {
 
   @override
   Future<Message> createMessage(Message message) async {
-    final db = await _appDb.database;
+    final db = _appDb.database;
     Map<String, dynamic> messageJson = message.toJson();
     final id = await db.insert(messagesTableName, messageJson);
     messageJson[MessagesDbCols.id] = id;
@@ -35,7 +34,7 @@ class AppDatabaseServiceImpl extends AppDatabaseService {
 
   @override
   Future<int> deleteMesssage(int id) async {
-    final db = await _appDb.database;
+    final db = _appDb.database;
 
     return await db.delete(
       messagesTableName,
@@ -46,7 +45,7 @@ class AppDatabaseServiceImpl extends AppDatabaseService {
 
   @override
   Future<Message> readMessage(int id) async {
-    final db = await _appDb.database;
+    final db = _appDb.database;
     final messages = await db.query(
       messagesTableName,
       columns: [
@@ -65,7 +64,7 @@ class AppDatabaseServiceImpl extends AppDatabaseService {
 
   @override
   Future<List<Message>> readAllMessages() async {
-    final db = await _appDb.database;
+    final db = _appDb.database;
     final messages = await db.query(
       messagesTableName,
       orderBy: '${MessagesDbCols.createdTime} ASC',
@@ -78,7 +77,7 @@ class AppDatabaseServiceImpl extends AppDatabaseService {
 
   @override
   Future<int> updateMessage(Message message) async {
-    final db = await _appDb.database;
+    final db = _appDb.database;
 
     return await db.update(
       messagesTableName,
@@ -90,7 +89,7 @@ class AppDatabaseServiceImpl extends AppDatabaseService {
 
   @override
   Future<String> getAppDatabaseFilePath() async {
-    final db = await _appDb.database;
+    final db = _appDb.database;
     return db.path;
   }
 }

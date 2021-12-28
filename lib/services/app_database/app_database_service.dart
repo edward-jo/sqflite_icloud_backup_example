@@ -1,7 +1,7 @@
 import 'package:sqflite_icloud_backup_example/models/message.dart';
 
 abstract class AppDatabaseService {
-  Future openAppDatabase();
+  Future init();
   Future closeAppDatabase();
   Future deleteAppDatabase();
   Future<String> getAppDatabaseFilePath();
