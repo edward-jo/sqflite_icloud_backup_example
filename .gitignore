@@ -44,3 +44,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Ed
+/ios/Podfile
+/ios/Podfile.lock
+*.env
