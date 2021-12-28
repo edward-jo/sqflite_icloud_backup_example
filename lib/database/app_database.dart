@@ -1,3 +1,4 @@
+import 'dart:developer' as developer;
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import '../constants.dart';
@@ -5,24 +6,27 @@ import '../constants.dart';
 class AppDatabase {
   Database? _database;
 
-  Future<Database> get database async {
-    if (_database != null) {
-      return _database!;
-    }
+  Database get database => _database!;
 
-    _database = await _openAppDatabase(appDatabaseFileName);
-    return _database!;
+  Future init() async {
+    if (_database != null && _database!.isOpen) {
+      await _database!.close();
+      _database = null;
+    }
+    await _openAppDatabase();
   }
 
-  Future<Database> _openAppDatabase(String fileName) async {
+  Future<void> _openAppDatabase() async {
     final databasePath = await getDatabasesPath();
-    final databaseFilePath = join(databasePath, fileName);
+    final databaseFilePath = join(databasePath, appDatabaseFileName);
 
-    return await openDatabase(
+    developer.log('Open database( $databaseFilePath )');
+    _database = await openDatabase(
       databaseFilePath,
       version: appDatabaseVersion,
       onCreate: _onCreate,
     );
+    developer.log('Opened database, status(${_database?.isOpen})');
   }
 
   Future _onCreate(Database db, int version) async {
@@ -35,12 +39,24 @@ CREATE TABLE $messagesTableName (
 ''');
   }
 
+  Future<void> closeAppDatabase() async {
+    if (_database == null || _database!.isOpen == false) {
+      return;
+    }
+
+    await _database?.close();
+    _database = null;
+    developer.log('Closed database');
+  }
+
   Future<void> deleteAppDatabase() async {
     final databasePath = await getDatabasesPath();
     final databaseFilePath = join(databasePath, appDatabaseFileName);
 
+    developer.log('Delete database( $databaseFilePath )');
     await deleteDatabase(databaseFilePath);
     _database = null;
+    developer.log('Deleted database');
     return;
   }
 }

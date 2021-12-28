@@ -48,3 +48,4 @@ app.*.map.json
 # Ed
 /ios/Podfile
 /ios/Podfile.lock
+*.env
